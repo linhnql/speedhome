@@ -1,0 +1,11 @@
+**/*.db
+**/*.*.db
+**/**/.idea
+~$*
+**/.DS_Store
+**/target
+**/*.iml
+**/**.tmp
+**/indexpath/
+**/transaction.log
+**/index_file/**

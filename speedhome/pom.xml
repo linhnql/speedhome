@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.speedhome.poc</groupId>
+    <artifactId>speedhome-poc</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+	<name>speedhome</name>
+    <packaging>pom</packaging>
+
+    <properties>
+        <main.basedir>${project.basedir}</main.basedir>
+    </properties>
+
+    <modules>
+        <module>speedhome-api</module>
+        <module>speedhome-service</module>
+        <module>speedhome-client</module>
+    </modules>
+</project>

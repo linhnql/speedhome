@@ -1,0 +1,243 @@
+swagger: '2.0'
+info:
+  description: The document of SpeedHome REST APIs
+  version: 1.0.0
+  title: SpeedHome REST APIs
+  contact:
+    name: Khoa VU
+    url: 'http://www.khoavu.net'
+    email: khoavd.it@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: 'localhost:8080'
+basePath: /speedhome/backend/v1
+
+paths:
+  /property:
+    parameters:
+      - $ref: "#/parameters/Request-Context"
+    get:
+      tags:
+        - Properties
+      summary: Search Property
+      operationId: search
+      consumes: []
+      parameters:
+        - name: term
+          in: query
+          description: Keyword Search
+          required: true
+          type: string
+      responses:
+        200:
+          $ref: '#/responses/Properties'
+        401:
+          $ref: '#/responses/NoAuthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+    post:
+      tags:
+        - Properties
+      summary: Add new a property
+      operationId: addProperty
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/PropertyReq'
+      responses:
+        200:
+          $ref: '#/responses/Property'
+        401:
+          $ref: '#/responses/NoAuthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+  /property/{id}:
+    parameters:
+      - $ref: "#/parameters/Request-Context"
+      - name: id
+        in: path
+        description: Property ID
+        required: true
+        type: string
+    put:
+      tags:
+        - Properties
+      summary: Update a Property
+      operationId: updateProperty
+      consumes: []
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/PropertyReq'
+      responses:
+        200:
+          $ref: '#/responses/Property'
+        401:
+          $ref: '#/responses/NoAuthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+    patch:
+      tags:
+        - Properties
+      summary: Update a Property
+      operationId: approveProperty
+      consumes: []
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/PropertyApproveReq'
+      responses:
+        200:
+          $ref: '#/responses/Property'
+        401:
+          $ref: '#/responses/NoAuthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+
+  /test:
+    get:
+      tags:
+        - Test
+      summary: Search Property
+      operationId: testAPI
+      consumes:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/Properties'
+        401:
+          $ref: '#/responses/NoAuthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+
+
+definitions:
+  Property:
+    type: object
+    properties:
+      id:
+        type: string
+        example: 030e5438-4d9e-4d41-aa68-ac04b05b7c3d
+      name:
+        type: string
+        example: Old Farm
+      desc:
+        type: string
+        example: Beautyful Old Farm
+      price:
+        type: number
+        format: double
+        example: 1500
+      type:
+        type: string
+        enum: [AGRICULTURE, RESIDENTIAL, COMMERCIAL, INDUSTRIAL]
+      status:
+        type: string
+        enum: [PENDING, APPROVED, REJECTED]
+      statusComment:
+        type: string
+        example: "Approved this property"
+  Properties:
+    type: array
+    items:
+      $ref: '#/definitions/Property'
+  PropertyReq:
+    type: object
+    required:
+      - name
+      - type
+    properties:
+      name:
+        type: string
+        example: Old Farm
+      desc:
+        type: string
+        example: Beautyful Old Farm
+      price:
+        type: number
+        format: double
+        example: 1.500
+      userId:
+        type: string
+        example: khoavu
+        description: who do action
+      type:
+        type: string
+        enum: [AGRICULTURE, RESIDENTIAL, COMMERCIAL, INDUSTRIAL]
+      status:
+        type: string
+        enum: [PENDING, APPROVED, REJECTED]
+  PropertyApproveReq:
+    type: object
+    required:
+      - status
+      - statusComment
+    properties:
+      status:
+        type: string
+        enum: [APPROVED, REJECTED]
+      statusComment:
+        type: string
+        example: "Approved this property"
+      userId:
+        type: string
+        example: khoavu
+        description: who do action
+responses:
+  Property:
+    description: 'Property Response'
+    schema:
+      $ref: '#/definitions/Property'
+  Properties:
+    description: 'Properties Response'
+    schema:
+      $ref: '#/definitions/Properties'
+  OK:
+    description: '200: OK'
+  Created:
+    description: '201: Created'
+  Accepted:
+    description: '202: Accepted'
+  NoContent:
+    description: '204: NoContent'
+  BadRequest:
+    description: '400: Bad Request'
+  NoAuthorized:
+    description: '401: No Authorized'
+  Forbidden:
+    description: '403: Forbidden'
+  NotFound:
+    description: '404: Not Found'
+  InternalServerError:
+    description: '500: Internal Server Error'
+parameters:
+  Request-Context:
+    name: apikey
+    in: header
+    description: Request context
+    required: true
+    type: string
